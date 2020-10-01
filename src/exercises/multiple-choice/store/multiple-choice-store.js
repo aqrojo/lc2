@@ -1,52 +1,57 @@
-import { observable, toJS } from 'mobx';
-import ResponseModel from './ResponseModel';
+import { observable, toJS } from 'mobx'
+import ResponseModel from './ResponseModel'
 
 export default function createStore(data) {
   const state = observable({
-    ...data,
+    steam: '',
+    validResponse: [],
     isEvaluated: false,
-
-    get responses() {
-      return data.responses.map(({ text }, idx) => {
-        return ResponseModel({
-          text,
-          idx,
-          parent: state,
-        });
-      });
-    },
+    responses: [],
 
     get userResponse() {
       return state.responses.reduce((acc, next) => {
-        return [...acc, ...(next.selected ? [next.text] : [])];
-      }, []);
+        return [...acc, ...(next.selected ? [next.text] : [])]
+      }, [])
     },
 
     get result() {
-      return state.userResponse.toString() === state.validResponse.toString();
+      return state.userResponse.toString() === state.validResponse.toString()
     },
 
     get output() {
-      return ({
+      return {
         steam: state.steam,
-        responses: state.responses.map(response => ({
-          text: response.text,
+        responses: state.responses.map((response) => ({
+          text: response.text
         })),
         validResponse: toJS(state.validResponse),
         userResponse: state.userResponse,
-        result: state.result,
-      });
+        result: state.result
+      }
     },
 
     evaluate() {
-      state.isEvaluated = true;
+      state.isEvaluated = true
     },
 
     reset() {
-      state.responses.forEach(response => response.reset());
-      state.isEvaluated = false;
+      state.responses.forEach((response) => response.reset())
+      state.isEvaluated = false
     },
 
-  });
-  return state;
+    create(data) {
+      state.steam = data.steam
+      state.validResponse = data.validResponse
+      state.responses = data.responses.map(({ text }, idx) => {
+        return ResponseModel({
+          text,
+          idx,
+          parent: state
+        })
+      })
+      state.isEvaluated = data.isEvaluated || false
+    }
+  })
+
+  return state
 }
