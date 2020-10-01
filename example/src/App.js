@@ -1,10 +1,11 @@
 import React from 'react'
 
-import { ExampleComponent } from 'lemo-lc2'
+import { MultipleChoice } from 'lemo-lc2'
 import 'lemo-lc2/dist/index.css'
+import {exerciseData} from './mulitple-choice-data';
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+  return <MultipleChoice data={exerciseData} />
 }
 
 export default App

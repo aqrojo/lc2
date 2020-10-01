@@ -8,6 +8,8 @@ node_modules
 build
 dist
 .rpt2_cache
+.idea
+example/report.*.json
 
 # misc
 .DS_Store
