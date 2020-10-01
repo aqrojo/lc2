@@ -9,49 +9,50 @@ export default function createStore(data) {
     responses: [],
 
     get userResponse() {
-      return this.responses.reduce((acc, next) => {
+      return state.responses.reduce((acc, next) => {
         return [...acc, ...(next.selected ? [next.text] : [])]
       }, [])
     },
 
     get result() {
-      return this.userResponse.toString() === this.validResponse.toString()
+      return state.userResponse.toString() === state.validResponse.toString()
     },
 
     get output() {
       return {
-        steam: this.steam,
-        responses: this.responses.map((response) => ({
+        steam: state.steam,
+        responses: state.responses.map((response) => ({
           text: response.text
         })),
-        validResponse: toJS(this.validResponse),
-        userResponse: this.userResponse,
-        result: this.result
+        validResponse: toJS(state.validResponse),
+        userResponse: state.userResponse,
+        result: state.result
       }
     },
 
     evaluate() {
-      this.isEvaluated = true
+      state.isEvaluated = true
     },
 
     reset() {
-      this.responses.forEach((response) => response.reset())
-      this.isEvaluated = false
+      state.responses.forEach((response) => response.reset())
+      state.isEvaluated = false
     },
 
-    create(data) {
-      this.steam = data.steam
-      this.validResponse = data.validResponse
-      this.responses = data.responses.map(({ text }, idx) => {
+    create(_data) {
+      console.log('data??', _data)
+      state.steam = _data.steam
+      state.validResponse = _data.validResponse
+      state.responses = _data.responses.map(({ text }, idx) => {
         return ResponseModel({
           text,
           idx,
           parent: state
         })
       })
-      this.isEvaluated = data.isEvaluated || false
+      state.isEvaluated = _data.isEvaluated || false
     }
   })
-
+  state.create(data)
   return state
 }
