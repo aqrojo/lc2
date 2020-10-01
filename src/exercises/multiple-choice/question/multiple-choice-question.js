@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import createStore from '../store/multiple-choice-store'
 import { useLocalStore, useObserver } from 'mobx-react-lite'
-import './styles.css'
 import { ResponseItem } from './ResponseItem'
 import ExerciseControls from '../../common/components/exercise-controls'
 
