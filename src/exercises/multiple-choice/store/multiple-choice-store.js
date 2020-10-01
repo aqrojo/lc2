@@ -9,47 +9,47 @@ export default function createStore(data) {
     responses: [],
 
     get userResponse() {
-      return state.responses.reduce((acc, next) => {
+      return this.responses.reduce((acc, next) => {
         return [...acc, ...(next.selected ? [next.text] : [])]
       }, [])
     },
 
     get result() {
-      return state.userResponse.toString() === state.validResponse.toString()
+      return this.userResponse.toString() === this.validResponse.toString()
     },
 
     get output() {
       return {
-        steam: state.steam,
-        responses: state.responses.map((response) => ({
+        steam: this.steam,
+        responses: this.responses.map((response) => ({
           text: response.text
         })),
-        validResponse: toJS(state.validResponse),
-        userResponse: state.userResponse,
-        result: state.result
+        validResponse: toJS(this.validResponse),
+        userResponse: this.userResponse,
+        result: this.result
       }
     },
 
     evaluate() {
-      state.isEvaluated = true
+      this.isEvaluated = true
     },
 
     reset() {
-      state.responses.forEach((response) => response.reset())
-      state.isEvaluated = false
+      this.responses.forEach((response) => response.reset())
+      this.isEvaluated = false
     },
 
     create(data) {
-      state.steam = data.steam
-      state.validResponse = data.validResponse
-      state.responses = data.responses.map(({ text }, idx) => {
+      this.steam = data.steam
+      this.validResponse = data.validResponse
+      this.responses = data.responses.map(({ text }, idx) => {
         return ResponseModel({
           text,
           idx,
           parent: state
         })
       })
-      state.isEvaluated = data.isEvaluated || false
+      this.isEvaluated = data.isEvaluated || false
     }
   })
 
